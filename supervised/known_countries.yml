@@ -1,0 +1,7 @@
+# Structure is as following:
+# country_name:
+# - kit_number
+# - kit_number
+# ...
+# country_name
+# - kit_number

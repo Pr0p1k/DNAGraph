@@ -1,9 +1,10 @@
 import os
 import csv
+import yaml
 from typing import Dict, Any
 
 TABLES_PATH = "tables2"
-LIMIT = 53
+LIMIT = 70
 
 
 def read_kit_file(code):
@@ -35,6 +36,12 @@ GRAPH: dict[Any, Any] = dict()
 # "code": [(code, mrca)]
 # }
 IGNORE_LIST = ["AR8211960"]
+
+
+with open(os.path.dirname(__file__) + "/supervised/known_countries.yml", "r") as locations_yaml_file:
+    output = yaml.safe_load(locations_yaml_file)
+
+KNOWN_LOCATIONS = output
 
 
 def main():
@@ -81,9 +88,16 @@ def main():
                 GRAPH[rel_code] = [(kit[0], mrca)]
             # graph_file.write(f"{kit[0]} -- {rel_code}[label={mrca}]\n")  # Me -- {rel_code}[label={line[5]}]\n
 
+    # set country clusters
+    for country, kit_list in KNOWN_LOCATIONS.items():
+        graph_file.write(f'subgraph cluster_{country} {{ \n label = "{country}"\n style=filled;\n color=lightgrey;\n')
+        for kit in kit_list:
+            graph_file.write(kit + "\n")
+        graph_file.write("}\n")
+
     # draw my direct connections
     for kit in rel_kits[1:LIMIT]:
-        if kit[0] in GRAPH and len(GRAPH[kit[0]]) > 1:  # only those that are connected with someone else
+        if kit[0] in GRAPH and len(GRAPH[kit[0]]) > 0:  # only those that are connected with someone else
             graph_file.write(f"{me_code} -- {kit[0]}[label={kit[6]} color=blue]\n")
 
     drawn_set = set()

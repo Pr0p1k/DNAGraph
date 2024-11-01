@@ -17,7 +17,7 @@ KIT_INFO_REGEX = "Kit:[\d\D]*<br>"
 def fetch_matches_page(code):
     request = urllib.request.Request(
         f"https://app.gedmatch.com/OneToManyFreeOriginalResults.php?kit={code}&xsubmit=Display+Results")
-    request.add_header("Cookie", "PHPSESSID=lr57bv29mggj4p02qnnblbuisp")
+    request.add_header("Cookie", f"PHPSESSID={os.environ["PHPSESSID"]}")
     request.add_header("Referer", "https://app.gedmatch.com/")
     request.add_header("Sec-Ch-Ua", '"Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"')
     request.add_header("Sec-Ch-Ua-Mobile", "?0")
@@ -47,7 +47,7 @@ def fetch_intersections_page(main_kit, rel_kit):
     }
     request = urllib.request.Request("https://app.gedmatch.com/people_match2.php", urlencode(data).encode())
 
-    request.add_header("Cookie", "PHPSESSID=lr57bv29mggj4p02qnnblbuisp")
+    request.add_header("Cookie", f"PHPSESSID={os.environ["PHPSESSID"]}")
     request.add_header("Referer", "https://app.gedmatch.com/")
     request.add_header("Sec-Ch-Ua", '"Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"')
     request.add_header("Sec-Ch-Ua-Mobile", "?0")
@@ -156,7 +156,7 @@ def intsec_main():
     for line in reader:
         rel_kits.append(line[0])
 
-    for kit in rel_kits[50:55]:
+    for kit in rel_kits[55:70]:
         intersection_page = fetch_intersections_page(main_kit, kit)
         lines = parse_page(intersection_page, {"class": "results-table"})
         write_to_file("kit_info", lines[2:], f"{main_kit}-{kit}")  # TODO 2 empty lines
