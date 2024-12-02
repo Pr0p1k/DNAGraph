@@ -12,8 +12,9 @@
    2. **-r** *int* - for how many direct matches get their matches
    3. **-o** *int* - offset to the previous param
    4. ENV: PHPSESSID - the PHPSESSID from gedmatch cookies
-2. Execute the [graph_drawer.py](/graph_drawer.py) to draw the graph into *graph.gv* file
-3. Go to https://dreampuf.github.io/GraphvizOnline/ and paste contents of graph.gv into the editor
+2. Optionally, if you know where some kits are from, you can add country info to [known_countries.yml](/supervised/known_countries.yml)
+3. Execute the [graph_drawer.py](/graph_drawer.py) to draw the graph into *graph.gv* file
+4. Go to https://dreampuf.github.io/GraphvizOnline/ and paste contents of graph.gv into the editor
 
 ## Result
 ### The result will look something like this depending on the engine chosen (here it's osage)
